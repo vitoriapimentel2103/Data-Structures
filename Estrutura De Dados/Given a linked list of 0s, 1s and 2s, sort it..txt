@@ -1,0 +1,59 @@
+
+//User function Template for Java
+
+/*
+class Node
+{
+    int data;
+    Node next;
+    Node(int data)
+    {
+        this.data = data;
+        next = null;
+    }
+}
+*/
+class Solution
+{
+    //Function to sort a linked list of 0s, 1s and 2s.
+    static Node segregate(Node head){
+        int z = 0;
+        int u = 0;
+        int d = 0;
+        Node temp = head;
+        
+        while(temp!=null){
+            if(temp.data == 0){
+                z++;
+                temp = temp.next;
+            }else if(temp.data == 1){
+                u++;
+                temp = temp.next;
+            }else{
+                d++;
+                temp = temp.next;
+            }
+        }
+        
+        Node cur = head;
+        
+        while(z!=0){
+            cur.data = 0;
+            z--;
+            cur = cur.next;
+        }
+        
+        while(u!=0){
+            cur.data = 1;
+            u--;
+            cur = cur.next;
+        }
+        
+        while(d!=0){
+            cur.data = 2;
+            d--;
+            cur = cur.next;
+        }
+        return head;
+    }
+}

@@ -1,0 +1,45 @@
+/*
+
+Definition for singly Link List Node
+class Node
+{
+    int data;
+    Node next;
+    
+    Node(int x){
+        data = x;
+        next = null;
+    }
+}
+
+You can also use the following for printing the link list.
+Node.printList(Node node);
+*/
+
+class Solution {
+    public static Node moveToFront(Node head) {
+        // Picking the last element
+        Node temp = head;
+        while(temp.next!=null){
+            temp = temp.next;
+        }
+        
+        int last = temp.data;
+        
+        //Putting at the start
+        Node node = new Node(last);
+        node.next = head;
+        head = node;
+        
+        //Deleting the last element
+        Node cur = head;
+        while(cur.next.next!=null){
+            cur = cur.next;
+        }
+        
+        cur.next = null;
+        
+        return head;
+    }
+    
+}

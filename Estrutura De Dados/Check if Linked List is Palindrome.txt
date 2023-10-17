@@ -1,0 +1,65 @@
+class Node
+{
+	int data;
+	Node next;
+	
+	Node(int d)
+	{
+		data = d;
+		next = null;
+	}
+}*/
+
+class Solution
+{
+    //Function to check whether the list is palindrome.
+    boolean isPalindrome(Node head){
+        if(head == null || head.next==null){
+            return true;
+        }
+        //Node do meio
+        Node meio = middle(head);
+        Node h2 = reverse(meio);
+        
+        while(head!=null && h2!=null){
+            if(head.data!=h2.data){
+                return false;
+            }else{
+                head = head.next;
+                h2 = h2.next;
+            }
+        }
+        return true;
+    }
+    
+    public Node middle(Node head){
+        Node fast = head;
+        Node slow = head;
+        
+        while(fast!=null && fast.next!=null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+    
+    public Node reverse(Node head){
+        if(head == null || head.next==null){
+            return head;
+        }
+        
+        Node prev = null;
+        Node pres = head;
+        Node next = pres.next;
+        
+        while(pres!=null){
+            pres.next = prev;
+            prev = pres;
+            pres = next;
+            if(next!=null){
+                next = next.next;
+            }
+        }
+        return prev;
+    }
+}

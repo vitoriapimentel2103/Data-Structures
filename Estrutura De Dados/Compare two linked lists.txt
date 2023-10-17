@@ -1,0 +1,37 @@
+
+
+/*  Structure of Node
+class Node
+ {
+    char data;
+    Node next;
+ 
+    // Constructor to create a new node
+    Node(char d) 
+    {
+       data = d;
+       next = null;
+    }
+ }*/
+
+class GfG
+{
+    int compare(Node node1, Node node2){
+        
+        Node temp1 = node1;
+        Node temp2 = node2;
+        
+        while(temp1!=null && temp2!=null){
+            if(temp1.data>temp2.data){
+                return 1;
+            }
+            
+            if(temp1.data < temp2.data){
+                return -1;
+            }
+            temp1 = temp1.next;
+            temp2 = temp2.next;
+        }
+        return 0;
+    }
+}

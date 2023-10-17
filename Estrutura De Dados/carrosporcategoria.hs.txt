@@ -1,0 +1,40 @@
+{-# LANGUAGE OverloadedStrings #-}
+
+import Data.Text (Text)
+import Database.PostgreSQL.Simple
+
+listarCategoriasDisponiveis :: Connection -> IO [Text]
+listarCategoriasDisponiveis conn =
+    query_ conn "SELECT DISTINCT categoria FROM Carros WHERE disponibilidade = TRUE"
+
+listarCarrosPorCategoria :: Connection -> Text -> IO [(Int, Text, Text, Int)]
+listarCarrosPorCategoria conn categoriaEscolhida =
+    query conn "SELECT id_carro, marca, modelo, ano FROM Carros WHERE categoria = ? AND disponibilidade = TRUE" (Only categoriaEscolhida)
+
+main :: IO ()
+main = do
+    conn <- connectDatabase
+    categoriasDisponiveis <- listarCategoriasDisponiveis conn
+    putStrLn "Aqui estão as categorias disponíveis: "
+    mapM_ putStrLn categoriasDisponiveis
+    putStrLn "Escolha uma das categoria apresentadas:"
+    categoriaEscolhida <- getLine
+    carrosNaCategoria <- listarCarrosPorCategoria conn categoriaEscolhida
+    if null carrosNaCategoria
+        then putStrLn "Pedimos desculpas, entretanto não há carros disponíveis nesta categoria no momento."
+        else do
+            putStrLn "Carros disponíveis no momento:"
+            mapM_ (putStrLn . formatCarro) carrosNaCategoria
+            putStrLn "Selecione o ID do carro que você deseja alugar:"
+            idCarroEscolhido <- readLn
+            putStrLn "Deseja prosseguir com o aluguel? Responda com S para sim ou N para não"
+            resposta <- getLine
+           	if resposta == "S" || resposta == "s"
+    		then alugarCarro conn idCarroEscolhido
+    		else putStrLn "Operação cancelada. Obrigado por escolher a Locadora de Carros!"
+    close conn
+
+formatCarro :: (Int, Text, Text, Int) -> String
+formatCarro (idCarro, marca, modelo, ano) =
+    "ID: " ++ show idCarro ++ ", Marca: " ++ unpack marca ++ ", Modelo: " ++ unpack modelo ++ ", Ano: " ++ show ano
+

@@ -1,0 +1,30 @@
+class Node
+{
+    int data;
+    Node next;
+    Node(int key)
+    {
+        data = key;
+        next = null;
+    }
+}
+
+*/
+
+
+class Solution {
+    // Function to pairwise swap elements of a linked list.
+    // It should returns head of the modified list
+    public Node pairwiseSwap(Node head)
+    {
+        if(head==null || head.next==null){
+            return head;
+        }
+        
+        Node fixo = head.next;
+        head.next = pairwiseSwap(fixo.next);
+        fixo.next = head;
+        
+        return fixo;
+    }
+}
